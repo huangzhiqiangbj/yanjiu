@@ -1,0 +1,12 @@
+{
+  "inputs": [
+    {
+      "id": "pack-1",
+      "label": "verified weekly report pack for March 12-20, 2026",
+      "source_origin": "git:HEAD:docs/K-12教育科技与AI前沿周报_20260312_20260320.md",
+      "destination": "/Users/huangzhiqiang/Documents/demo/.cursor/skills/k12-ai-education-frontier-weekly-report/autoresearch-k12-ai-education-frontier-weekly-report/inputs/input-1-verified-week-pack-20260312-20260320.md",
+      "time_window": "2026-03-12 to 2026-03-20",
+      "note": "Frozen pack derived from a previously source-grounded weekly report to stabilize autoresearch experiments."
+    }
+  ]
+}

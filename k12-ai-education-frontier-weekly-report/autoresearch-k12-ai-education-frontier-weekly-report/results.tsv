@@ -1,0 +1,6 @@
+experiment	score	max_score	pass_rate	status	description
+0	16	20	80.0%	baseline	tightened-eval baseline on frozen research pack
+1	17	20	85.0%	keep	kept fixed report title and month-day date rule in output skeleton
+2	20	20	100.0%	keep	added explicit year-to-month-day conversion example for the date line
+3	20	20	100.0%	discard	repeated title/date rule in quality checklist with no score gain
+4	20	20	100.0%	discard	added anti-pattern against year copying with no score gain

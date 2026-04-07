@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="refresh" content="10" />
+    <title>Autoresearch Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+      :root {
+        color-scheme: light;
+        --bg: #f7f9fc;
+        --card: #ffffff;
+        --text: #243047;
+        --muted: #6a758b;
+        --line: #dbe2ef;
+        --blue: #8fb8ff;
+        --green: #a8ddb5;
+        --red: #f6b7bf;
+        --lavender: #c8c8ff;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        background: var(--bg);
+        color: var(--text);
+      }
+      main { max-width: 1160px; margin: 0 auto; padding: 24px; }
+      h1, h2 { margin: 0 0 12px; font-weight: 700; }
+      p { margin: 0; color: var(--muted); }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 16px;
+        margin-top: 20px;
+      }
+      .card {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        padding: 18px;
+        box-shadow: 0 8px 24px rgba(36, 48, 71, 0.05);
+      }
+      .label { font-size: 13px; color: var(--muted); margin-bottom: 6px; }
+      .value { font-size: 30px; font-weight: 700; }
+      .panel { margin-top: 20px; }
+      canvas { width: 100%; max-height: 360px; }
+      table { width: 100%; border-collapse: collapse; font-size: 14px; }
+      th, td {
+        padding: 10px 12px;
+        border-bottom: 1px solid var(--line);
+        text-align: left;
+        vertical-align: top;
+      }
+      th { color: var(--muted); font-weight: 600; }
+      .bars { display: grid; gap: 10px; }
+      .bar-row {
+        display: grid;
+        grid-template-columns: 220px 1fr 80px;
+        gap: 12px;
+        align-items: center;
+      }
+      .bar-track {
+        width: 100%;
+        height: 16px;
+        border-radius: 999px;
+        background: #edf1f7;
+        overflow: hidden;
+      }
+      .bar-fill { height: 100%; border-radius: inherit; }
+      .status-pill {
+        display: inline-block;
+        padding: 4px 10px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 600;
+        background: #eef3fb;
+        color: #46608f;
+      }
+      .status-baseline { background: rgba(143, 184, 255, 0.2); }
+      .status-keep { background: rgba(168, 221, 181, 0.35); }
+      .status-discard { background: rgba(246, 183, 191, 0.35); }
+      .status-setup, .status-running { background: rgba(200, 200, 255, 0.35); }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="card">
+        <h1 id="title">Autoresearch Dashboard</h1>
+        <p id="subtitle">Loading results...</p>
+      </div>
+      <section class="grid">
+        <div class="card">
+          <div class="label">Current Status</div>
+          <div class="value" id="status">-</div>
+        </div>
+        <div class="card">
+          <div class="label">Current Experiment</div>
+          <div class="value" id="current-experiment">0</div>
+        </div>
+        <div class="card">
+          <div class="label">Baseline Score</div>
+          <div class="value" id="baseline-score">-</div>
+        </div>
+        <div class="card">
+          <div class="label">Best Score</div>
+          <div class="value" id="best-score">0%</div>
+        </div>
+      </section>
+      <section class="card panel">
+        <h2>Score Progression</h2>
+        <canvas id="score-chart"></canvas>
+      </section>
+      <section class="card panel">
+        <h2>Experiment Bars</h2>
+        <div class="bars" id="experiment-bars"></div>
+      </section>
+      <section class="card panel">
+        <h2>Experiments</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Score</th>
+              <th>Pass Rate</th>
+              <th>Status</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody id="experiment-table"></tbody>
+        </table>
+      </section>
+      <section class="card panel">
+        <h2>Per-Eval Breakdown</h2>
+        <div class="bars" id="eval-bars"></div>
+      </section>
+    </main>
+    <script>
+      let chart;
+      function statusColor(status) {
+        if (status === 'baseline') return getComputedStyle(document.documentElement).getPropertyValue('--blue');
+        if (status === 'keep') return getComputedStyle(document.documentElement).getPropertyValue('--green');
+        if (status === 'discard') return getComputedStyle(document.documentElement).getPropertyValue('--red');
+        return getComputedStyle(document.documentElement).getPropertyValue('--lavender');
+      }
+      function pillClass(status) {
+        return `status-pill status-${status || 'setup'}`;
+      }
+      async function loadData() {
+        const response = await fetch(`results.json?ts=${Date.now()}`);
+        return response.json();
+      }
+      function renderCards(data) {
+        document.getElementById('title').textContent = `${data.skill_name} autoresearch`;
+        document.getElementById('subtitle').textContent = `Version: ${data.version_name} | Auto-refresh every 10 seconds`;
+        document.getElementById('status').textContent = data.status || '-';
+        document.getElementById('current-experiment').textContent = `${data.current_experiment ?? 0}`;
+        document.getElementById('baseline-score').textContent = data.baseline_score === null || data.baseline_score === undefined ? '-' : `${data.baseline_score}%`;
+        document.getElementById('best-score').textContent = `${data.best_score ?? 0}%`;
+      }
+      function renderChart(data) {
+        const ctx = document.getElementById('score-chart');
+        const labels = data.experiments.map((item) => `Exp ${item.id}`);
+        const values = data.experiments.map((item) => item.pass_rate);
+        const colors = data.experiments.map((item) => statusColor(item.status));
+        if (chart) chart.destroy();
+        chart = new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels,
+            datasets: [{
+              label: 'Pass rate %',
+              data: values,
+              borderColor: '#6b8cff',
+              backgroundColor: 'rgba(107, 140, 255, 0.12)',
+              pointBackgroundColor: colors,
+              pointRadius: 5,
+              tension: 0.2,
+              fill: true,
+            }],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: { y: { beginAtZero: true, max: 100 } },
+            plugins: { legend: { display: false } },
+          },
+        });
+      }
+      function renderExperimentBars(data) {
+        const container = document.getElementById('experiment-bars');
+        container.innerHTML = '';
+        if (!data.experiments.length) {
+          container.innerHTML = '<p>No experiments logged yet.</p>';
+          return;
+        }
+        data.experiments.forEach((item) => {
+          const row = document.createElement('div');
+          row.className = 'bar-row';
+          row.innerHTML = `
+            <div>Experiment ${item.id}</div>
+            <div class="bar-track">
+              <div class="bar-fill" style="width:${item.pass_rate}%; background:${statusColor(item.status)};"></div>
+            </div>
+            <div>${item.pass_rate}%</div>
+          `;
+          container.appendChild(row);
+        });
+      }
+      function renderExperimentTable(data) {
+        const body = document.getElementById('experiment-table');
+        body.innerHTML = '';
+        if (!data.experiments.length) {
+          body.innerHTML = "<tr><td colspan='5'>No experiments logged yet.</td></tr>";
+          return;
+        }
+        data.experiments.forEach((item) => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${item.id}</td>
+            <td>${item.score}/${item.max_score}</td>
+            <td>${item.pass_rate}%</td>
+            <td><span class="${pillClass(item.status)}">${item.status}</span></td>
+            <td>${item.description}</td>
+          `;
+          body.appendChild(row);
+        });
+      }
+      function renderEvalBars(data) {
+        const container = document.getElementById('eval-bars');
+        container.innerHTML = '';
+        data.eval_breakdown.forEach((item) => {
+          const rate = item.total ? Math.round((item.pass_count / item.total) * 1000) / 10 : 0;
+          const row = document.createElement('div');
+          row.className = 'bar-row';
+          row.innerHTML = `
+            <div>${item.name}</div>
+            <div class="bar-track">
+              <div class="bar-fill" style="width:${rate}%; background: var(--blue);"></div>
+            </div>
+            <div>${item.pass_count}/${item.total}</div>
+          `;
+          container.appendChild(row);
+        });
+      }
+      async function render() {
+        try {
+          const data = await loadData();
+          renderCards(data);
+          renderChart(data);
+          renderExperimentBars(data);
+          renderExperimentTable(data);
+          renderEvalBars(data);
+        } catch (error) {
+          document.getElementById('subtitle').textContent = `Failed to load results: ${error.message}`;
+        }
+      }
+      render();
+      setInterval(render, 10000);
+    </script>
+  </body>
+</html>

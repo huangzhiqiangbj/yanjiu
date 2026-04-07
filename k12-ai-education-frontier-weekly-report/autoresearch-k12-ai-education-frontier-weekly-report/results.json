@@ -1,0 +1,72 @@
+{
+  "skill_name": "k12-ai-education-frontier-weekly-report",
+  "version_name": "k12-ai-education-frontier-weekly-report-v2",
+  "status": "complete",
+  "current_experiment": 4,
+  "baseline_score": 80.0,
+  "best_score": 100.0,
+  "experiments": [
+    {
+      "id": 0,
+      "score": 16,
+      "max_score": 20,
+      "pass_rate": 80.0,
+      "status": "baseline",
+      "description": "tightened-eval baseline on frozen research pack"
+    },
+    {
+      "id": 1,
+      "score": 17,
+      "max_score": 20,
+      "pass_rate": 85.0,
+      "status": "keep",
+      "description": "kept fixed report title and month-day date rule in output skeleton"
+    },
+    {
+      "id": 2,
+      "score": 20,
+      "max_score": 20,
+      "pass_rate": 100.0,
+      "status": "keep",
+      "description": "added explicit year-to-month-day conversion example for the date line"
+    },
+    {
+      "id": 3,
+      "score": 20,
+      "max_score": 20,
+      "pass_rate": 100.0,
+      "status": "discard",
+      "description": "repeated title/date rule in quality checklist with no score gain"
+    },
+    {
+      "id": 4,
+      "score": 20,
+      "max_score": 20,
+      "pass_rate": 100.0,
+      "status": "discard",
+      "description": "added anti-pattern against year copying with no score gain"
+    }
+  ],
+  "eval_breakdown": [
+    {
+      "name": "标题日期与固定骨架精确合规",
+      "pass_count": 18,
+      "total": 25
+    },
+    {
+      "name": "读者偏置足够明显",
+      "pass_count": 25,
+      "total": 25
+    },
+    {
+      "name": "简讯体与表格压缩执行到位",
+      "pass_count": 25,
+      "total": 25
+    },
+    {
+      "name": "时间窗与证据边界克制",
+      "pass_count": 25,
+      "total": 25
+    }
+  ]
+}

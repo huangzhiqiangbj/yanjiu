@@ -1,0 +1,79 @@
+{
+  "skill_name": "k12-ai-education-frontier-weekly-report",
+  "target_skill": "/Users/huangzhiqiang/Documents/demo/.cursor/skills/k12-ai-education-frontier-weekly-report/SKILL.md",
+  "reference_files": [
+    "/Users/huangzhiqiang/Documents/demo/.cursor/skills/k12-ai-education-frontier-weekly-report/examples.md",
+    "/Users/huangzhiqiang/Documents/demo/.cursor/skills/k12-ai-education-frontier-weekly-report/reference.md"
+  ],
+  "working_directory": "/Users/huangzhiqiang/Documents/demo/.cursor/skills/k12-ai-education-frontier-weekly-report/autoresearch-k12-ai-education-frontier-weekly-report",
+  "working_copy": "/Users/huangzhiqiang/Documents/demo/.cursor/skills/k12-ai-education-frontier-weekly-report/autoresearch-k12-ai-education-frontier-weekly-report/k12-ai-education-frontier-weekly-report-v2.md",
+  "baseline_copy": "/Users/huangzhiqiang/Documents/demo/.cursor/skills/k12-ai-education-frontier-weekly-report/autoresearch-k12-ai-education-frontier-weekly-report/SKILL.md.baseline",
+  "version_name": "k12-ai-education-frontier-weekly-report-v2",
+  "runs_per_experiment": 5,
+  "run_interval": "every 2 minutes",
+  "budget_cap": null,
+  "status": "setup",
+  "notes": [
+    "The original SKILL.md remains untouched. All mutations apply only to the working copy in this directory.",
+    "To stabilize experiments, the harness uses a frozen research pack derived from a previously source-grounded March 12-20, 2026 report.",
+    "The three anchor prompts reuse the same research pack with different reader emphases.",
+    "Because runs_per_experiment is 5 and the input pool has 3 prompts, the run sequence rotates the prompts in a fixed order for comparability."
+  ],
+  "test_input_pool": [
+    {
+      "id": "pool-1",
+      "label": "comprehensive readers",
+      "source_path": "/Users/huangzhiqiang/Documents/demo/.cursor/skills/k12-ai-education-frontier-weekly-report/autoresearch-k12-ai-education-frontier-weekly-report/inputs/input-1-verified-week-pack-20260312-20260320.md",
+      "original_prompt": "请基于提供的已核验研究包，生成 2026年3月12日-2026年3月20日的中小学教育科技与AI前沿周报，面向中国教育官员、校长和教育研究者，按一、二、三、四、五五个主章节输出。只在对话中展示最终 Markdown，不写入 docs/，也不导出 Word。不要补充研究包之外的事实。"
+    },
+    {
+      "id": "pool-2",
+      "label": "education officials",
+      "source_path": "/Users/huangzhiqiang/Documents/demo/.cursor/skills/k12-ai-education-frontier-weekly-report/autoresearch-k12-ai-education-frontier-weekly-report/inputs/input-1-verified-week-pack-20260312-20260320.md",
+      "original_prompt": "请基于提供的已核验研究包，生成 2026年3月12日-2026年3月20日的中小学AI教育治理周报，重点给教育局领导看，优先分析政策治理、区域推进、地方试点与规模化条件。只在对话中展示最终 Markdown，不写入 docs/，也不导出 Word。不要补充研究包之外的事实。"
+    },
+    {
+      "id": "pool-3",
+      "label": "principals and teaching leaders",
+      "source_path": "/Users/huangzhiqiang/Documents/demo/.cursor/skills/k12-ai-education-frontier-weekly-report/autoresearch-k12-ai-education-frontier-weekly-report/inputs/input-1-verified-week-pack-20260312-20260320.md",
+      "original_prompt": "请基于提供的已核验研究包，生成 2026年3月12日-2026年3月20日的中小学AI周报，重点给校长和教研负责人看，优先覆盖课程实施、教师培训、课堂应用、校园治理和家校沟通。只在对话中展示最终 Markdown，不写入 docs/，也不导出 Word。不要补充研究包之外的事实。"
+    }
+  ],
+  "anchor_runs": [
+    {
+      "id": "run-1",
+      "label": "comprehensive-readers",
+      "source_snapshot": "/Users/huangzhiqiang/Documents/demo/.cursor/skills/k12-ai-education-frontier-weekly-report/autoresearch-k12-ai-education-frontier-weekly-report/inputs/input-1-verified-week-pack-20260312-20260320.md",
+      "source_origin": "git:HEAD:docs/K-12教育科技与AI前沿周报_20260312_20260320.md",
+      "prompt": "请基于提供的已核验研究包，生成 2026年3月12日-2026年3月20日的中小学教育科技与AI前沿周报，面向中国教育官员、校长和教育研究者，按一、二、三、四、五五个主章节输出。只在对话中展示最终 Markdown，不写入 docs/，也不导出 Word。不要补充研究包之外的事实。"
+    },
+    {
+      "id": "run-2",
+      "label": "officials-1",
+      "source_snapshot": "/Users/huangzhiqiang/Documents/demo/.cursor/skills/k12-ai-education-frontier-weekly-report/autoresearch-k12-ai-education-frontier-weekly-report/inputs/input-1-verified-week-pack-20260312-20260320.md",
+      "source_origin": "git:HEAD:docs/K-12教育科技与AI前沿周报_20260312_20260320.md",
+      "prompt": "请基于提供的已核验研究包，生成 2026年3月12日-2026年3月20日的中小学AI教育治理周报，重点给教育局领导看，优先分析政策治理、区域推进、地方试点与规模化条件。只在对话中展示最终 Markdown，不写入 docs/，也不导出 Word。不要补充研究包之外的事实。"
+    },
+    {
+      "id": "run-3",
+      "label": "principals-1",
+      "source_snapshot": "/Users/huangzhiqiang/Documents/demo/.cursor/skills/k12-ai-education-frontier-weekly-report/autoresearch-k12-ai-education-frontier-weekly-report/inputs/input-1-verified-week-pack-20260312-20260320.md",
+      "source_origin": "git:HEAD:docs/K-12教育科技与AI前沿周报_20260312_20260320.md",
+      "prompt": "请基于提供的已核验研究包，生成 2026年3月12日-2026年3月20日的中小学AI周报，重点给校长和教研负责人看，优先覆盖课程实施、教师培训、课堂应用、校园治理和家校沟通。只在对话中展示最终 Markdown，不写入 docs/，也不导出 Word。不要补充研究包之外的事实。"
+    },
+    {
+      "id": "run-4",
+      "label": "officials-2",
+      "source_snapshot": "/Users/huangzhiqiang/Documents/demo/.cursor/skills/k12-ai-education-frontier-weekly-report/autoresearch-k12-ai-education-frontier-weekly-report/inputs/input-1-verified-week-pack-20260312-20260320.md",
+      "source_origin": "git:HEAD:docs/K-12教育科技与AI前沿周报_20260312_20260320.md",
+      "prompt": "请基于提供的已核验研究包，生成 2026年3月12日-2026年3月20日的中小学AI教育治理周报，重点给教育局领导看，优先分析政策治理、区域推进、地方试点与规模化条件。只在对话中展示最终 Markdown，不写入 docs/，也不导出 Word。不要补充研究包之外的事实。"
+    },
+    {
+      "id": "run-5",
+      "label": "principals-2",
+      "source_snapshot": "/Users/huangzhiqiang/Documents/demo/.cursor/skills/k12-ai-education-frontier-weekly-report/autoresearch-k12-ai-education-frontier-weekly-report/inputs/input-1-verified-week-pack-20260312-20260320.md",
+      "source_origin": "git:HEAD:docs/K-12教育科技与AI前沿周报_20260312_20260320.md",
+      "prompt": "请基于提供的已核验研究包，生成 2026年3月12日-2026年3月20日的中小学AI周报，重点给校长和教研负责人看，优先覆盖课程实施、教师培训、课堂应用、校园治理和家校沟通。只在对话中展示最终 Markdown，不写入 docs/，也不导出 Word。不要补充研究包之外的事实。"
+    }
+  ]
+}
