@@ -31,6 +31,7 @@ cp -R <repo>/<skill-name> ~/.cursor/skills/
 - `format-word-documents`
 - `humanizer`
 - `k12-ai-education-frontier-weekly-report`
+- `k12-ai-research-radar`
 - `k12-edtech-research`
 - `openclaw-skill-vetter`
 - `pua`
@@ -51,6 +52,7 @@ cp -R <repo>/<skill-name> ~/.cursor/skills/
 这组 skills 主要覆盖以下场景：
 
 - 中国教育科技、AI 教育与政策研究
+- 基础教育AI学术文献检索、候选筛选与研究雷达
 - 周报、研究简报、Word/HTML 交付工作流
 - 图表、信息图、S2 交叉表等可视化能力
 - 学术写作、文献综述、统计分析与图表生成
